@@ -1,0 +1,43 @@
+---
+- name: ansible installation
+  hosts: bastion-host
+  become: true
+  tasks:
+  # - name: update apt cache
+  #   ansible.builtin.apt:
+  #     update_cache: yes   
+
+  - name: Installing ansible
+    ansible.builtin.apt:
+      name: ansible
+      state: present
+
+  - name: Create 2 dirs one for deployment and one for the playbook configs
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0755'
+    loop:
+    - /home/ubuntu/deployment
+    - /home/ubuntu/playbook  
+
+  - name: Copying the docker-compose.yaml and env files to the deployment directory
+    ansible.builtin.copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}/"
+      mode: "{{ item.mode | default('0644') }}"
+      owner: ubuntu
+      group: ubuntu
+    loop:
+      - { src: "./docker-compose.yaml", dest: "/home/ubuntu/deployment" }
+      - { src: "./.env", dest: "/home/ubuntu/deployment" }
+      - { src: "~/Desktop/ec2-connect.pem", dest: "/home/ubuntu/playbook" , mode: "0400" }
+      # - { src: "~/.ssh/aws-keypair", dest: "/home/ubuntu/playbook" , mode: "0400" }
+      - { src: "./main-deployment-playbook.yaml", dest: "/home/ubuntu/playbook" }
+      - { src: "./main-inventory.ini", dest: "/home/ubuntu/playbook" }  
+
+  - name: running the playbook command
+    ansible.builtin.command: ansible-playbook -i main-inventory.ini main-deployment-playbook.yaml
+    args:
+      chdir: /home/ubuntu/playbook
+    register: result 

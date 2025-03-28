@@ -1,0 +1,45 @@
+---
+- name: ansible installation
+  hosts: web-app1
+  become: true
+  tasks:
+  - name: update apt cache
+    ansible.builtin.apt:
+      update_cache: yes   
+
+  - name: Add ubuntu user to the docker group
+    ansible.builtin.user:
+      name: ubuntu
+      groups: docker
+      append: yes    
+
+  - name: Installing ansible
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - docker.io
+    - docker-compose
+
+  - name: Create 2 dirs one for deployment and one for the playbook configs
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0755'
+    loop:
+    - /home/ubuntu/app-deployment  
+
+  - name: Copying the docker-compose.yaml and env files to the deployment directory
+    ansible.builtin.copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}/"
+      mode: "{{ item.mode | default('0644') }}"
+    loop:
+      - { src: "/home/ubuntu/deployment/docker-compose.yaml", dest: "/home/ubuntu/app-deployment" }
+      - { src: "/home/ubuntu/deployment/.env", dest: "/home/ubuntu/app-deployment" }
+
+
+  - name: Run docker-compose up
+    community.docker.docker_compose:
+      project_src: /home/ubuntu/app-deployment
+      state: present

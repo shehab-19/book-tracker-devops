@@ -1,0 +1,8 @@
+services:
+  flaskapp:
+    image: shehab19/book-tracker:mysql-connection
+    container_name: flaskapp
+    network_mode: "host"
+    env_file: 
+      - ./.env
+    restart: unless-stopped

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track your reading progress with Shehab Book Tracker">
+    <title>Shehab Book Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-book-reader"></i> Shehab Book Tracker</h1>
+        </header>
+
+        <main>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}" role="alert">
+                            <i class="fas fa-info-circle"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <section class="add-book-section">
+                <form action="{{ url_for('add') }}" method="POST" class="add-book-form">
+                    <input type="text" name="title" placeholder="Enter book title" required
+                           aria-label="Book title">
+                    <input type="text" name="author" placeholder="Enter author name" required
+                           aria-label="Author name">
+                    <button type="submit">
+                        <i class="fas fa-plus"></i> Add Book
+                    </button>
+                </form>
+            </section>
+
+            <section class="books-list-section">
+                <ul aria-label="Books list">
+                    {% if books %}
+                        {% for book in books %}
+                            <li class="{{ 'read' if book['read'] else '' }}" data-book-id="{{ book['id'] }}">
+                                <div class="book-info">
+                                    <strong>{{ book['title'] }}</strong>
+                                    <span>by {{ book['author'] }}</span>
+                                </div>
+                                <div class="book-actions">
+                                    {% if not book['read'] %}
+                                        <a href="{{ url_for('read', id=book['id']) }}" 
+                                           class="mark-read" 
+                                           title="Mark as read">
+                                            <i class="fas fa-check"></i> Mark as Read
+                                        </a>
+                                    {% endif %}
+                                    <a href="{{ url_for('delete', id=book['id']) }}" 
+                                       class="delete" 
+                                       title="Delete book"
+                                       >
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="empty-message">
+                            <i class="fas fa-info-circle"></i>
+                            No books added yet. Start by adding a book above!
+                        </li>
+                    {% endif %}
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Ignore .pem files
+*.pem
+
+# Ignore environment and config files
+.env
+
+# Ignore Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# Ignore Terraform-related files
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Ignore Docker-related files
+docker-compose.override.yaml
+*.log
+
+# Ignore editor and OS-specific files
+*.swp
+.DS_Store
+*.bak
