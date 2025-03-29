@@ -1,3 +1,32 @@
+resource "aws_security_group" "bastion_sg" {
+  name        = "bastion_sg"
+    description = "Security group for bastion host"
+    vpc_id      = aws_vpc.main.id
+  
+    # ssh access 
+    ingress {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"] # change this to your IP
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "bastion-host-security-group"
+    }
+
+   
+}
+
+
+
 resource "aws_security_group" "web_sg" {
     name        = "web-sg"
     description = "Security group for web app"
