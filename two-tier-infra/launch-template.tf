@@ -21,6 +21,7 @@ resource "aws_launch_template" "web_lt" {
     resource_type = "instance"
     tags = {
       Name = "Web-Instance"
+      tier = "web"
     }
   }
 }

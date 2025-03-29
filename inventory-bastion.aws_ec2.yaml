@@ -1,0 +1,15 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+filters:
+  tag:Name: bastion
+hostnames:
+  - public-ip-address
+keyed_groups:
+  - key: tags.Name
+    prefix: tag_Name_
+compose:
+  ansible_host: public_ip_address  
+  ansible_ssh_common_args: >-
+    -o StrictHostKeyChecking=no
+    -o IdentitiesOnly=yes   

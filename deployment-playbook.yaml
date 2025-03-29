@@ -1,27 +1,63 @@
 ---
 - name: ansible installation
-  hosts: bastion-host
+  hosts: all
   become: true
   tasks:
-  # - name: update apt cache
-  #   ansible.builtin.apt:
-  #     update_cache: yes   
-
-  - name: Installing ansible
+  
+  - name: Update apt cache
     ansible.builtin.apt:
-      name: ansible
-      state: present
+      update_cache: yes   
 
-  - name: Create 2 dirs one for deployment and one for the playbook configs
+  # - name: Install required packages
+  #   ansible.builtin.apt:
+  #     name:
+  #       - ansible
+  #       - python3
+  #       - python3-pip
+  #       - unzip
+  #     state: present
+
+  # - name: Install boto3
+  #   ansible.builtin.pip:
+  #     name: boto3
+  #     executable: pip3
+  #     extra_args: --break-system-packages
+  #     state: present
+
+  # - name: Install CA certificates
+  #   ansible.builtin.apt:
+  #     name: ca-certificates
+  #     state: present
+  #     update_cache: yes
+
+  # - name: Download AWS CLI
+  #   ansible.builtin.get_url:
+  #     url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+  #     dest: "/tmp/awscliv2.zip"
+  #     mode: '0644'
+  #     validate_certs: no
+
+  # - name: Unzip AWS CLI
+  #   ansible.builtin.unarchive:
+  #     src: "/tmp/awscliv2.zip"
+  #     dest: "/tmp"
+  #     remote_src: yes
+
+
+  # - name: Install AWS CLI
+  #   ansible.builtin.command:
+  #     cmd: "/tmp/aws/install"
+
+  - name: Create directories for deployment and playbook configs
     ansible.builtin.file:
       path: "{{ item }}"
       state: directory
       mode: '0755'
     loop:
-    - /home/ubuntu/deployment
-    - /home/ubuntu/playbook  
+      - /home/ubuntu/deployment
+      - /home/ubuntu/playbook  
 
-  - name: Copying the docker-compose.yaml and env files to the deployment directory
+  - name: Copy required files to the deployment directory
     ansible.builtin.copy:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}/"
@@ -31,13 +67,13 @@
     loop:
       - { src: "./docker-compose.yaml", dest: "/home/ubuntu/deployment" }
       - { src: "./.env", dest: "/home/ubuntu/deployment" }
-      - { src: "~/Desktop/ec2-connect.pem", dest: "/home/ubuntu/playbook" , mode: "0400" }
-      # - { src: "~/.ssh/aws-keypair", dest: "/home/ubuntu/playbook" , mode: "0400" }
-      - { src: "./main-deployment-playbook.yaml", dest: "/home/ubuntu/playbook" }
-      - { src: "./main-inventory.ini", dest: "/home/ubuntu/playbook" }  
+      - { src: "~/Desktop/ec2-connect.pem", dest: "/home/ubuntu/playbook" , mode: "0400" } # change the path with your own PEM key
+      - { src: "./inventory.aws_ec2.yaml", dest: "/home/ubuntu/playbook" }
+      - { src: "./ansible.cfg", dest: "/home/ubuntu/playbook" }
+      - { src: "./main-deployment-playbook.yaml", dest: "/home/ubuntu/playbook" } 
 
-  - name: running the playbook command
-    ansible.builtin.command: ansible-playbook -i main-inventory.ini main-deployment-playbook.yaml
+  - name: Run the playbook command
+    ansible.builtin.command: ansible-playbook -i inventory.aws_ec2.yaml main-deployment-playbook.yaml
     args:
       chdir: /home/ubuntu/playbook
-    register: result 
+    register: result
