@@ -3,9 +3,10 @@ resource "aws_instance" "example" {
   instance_type = var.t2-instance_type
   subnet_id     = aws_subnet.public[0].id
   vpc_security_group_ids = [ aws_security_group.bastion_sg.id ]
-  key_name = 
+  key_name = aws_key_pair.mykey.key_name
+  associate_public_ip_address = true
 
-user_data = filebase64("${pwd}/bastion.sh")
+  user_data = filebase64("${pwd}/bastion.sh")
 
   tags = {
     Name = "bastion"
