@@ -1,53 +1,10 @@
 ---
 - name: ansible installation
   hosts: all
+  remote_user: ubuntu
   become: true
   tasks:
   
-  - name: Update apt cache
-    ansible.builtin.apt:
-      update_cache: yes   
-
-  # - name: Install required packages
-  #   ansible.builtin.apt:
-  #     name:
-  #       - ansible
-  #       - python3
-  #       - python3-pip
-  #       - unzip
-  #     state: present
-
-  # - name: Install boto3
-  #   ansible.builtin.pip:
-  #     name: boto3
-  #     executable: pip3
-  #     extra_args: --break-system-packages
-  #     state: present
-
-  # - name: Install CA certificates
-  #   ansible.builtin.apt:
-  #     name: ca-certificates
-  #     state: present
-  #     update_cache: yes
-
-  # - name: Download AWS CLI
-  #   ansible.builtin.get_url:
-  #     url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-  #     dest: "/tmp/awscliv2.zip"
-  #     mode: '0644'
-  #     validate_certs: no
-
-  # - name: Unzip AWS CLI
-  #   ansible.builtin.unarchive:
-  #     src: "/tmp/awscliv2.zip"
-  #     dest: "/tmp"
-  #     remote_src: yes
-
-
-  # - name: Install AWS CLI
-  #   ansible.builtin.command:
-  #     cmd: "/tmp/aws/install"
-
   - name: Create directories for deployment and playbook configs
     ansible.builtin.file:
       path: "{{ item }}"

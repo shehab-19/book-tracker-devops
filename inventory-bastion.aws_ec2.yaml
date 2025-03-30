@@ -9,7 +9,9 @@ keyed_groups:
   - key: tags.Name
     prefix: tag_Name_
 compose:
-  ansible_host: public_ip_address  
+  ansible_host: public_ip_address
+  ansible_user: ubuntu
+  ansible_ssh_private_key_file: /home/shehab/Desktop/ec2-connect.pem
   ansible_ssh_common_args: >-
     -o StrictHostKeyChecking=no
     -o IdentitiesOnly=yes   
