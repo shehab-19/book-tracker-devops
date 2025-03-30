@@ -17,3 +17,19 @@ resource "aws_iam_policy" "ssm_read_policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ec2_full_access" {
+  name        = "EC2FullAccess"
+  description = "bastion host ec2 full access policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "ec2:*"
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
