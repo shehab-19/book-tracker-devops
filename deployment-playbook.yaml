@@ -24,13 +24,14 @@
     loop:
       - { src: "./docker-compose.yaml", dest: "/home/ubuntu/deployment" }
       - { src: "./.env", dest: "/home/ubuntu/deployment" }
-      - { src: "~/Desktop/ec2-connect.pem", dest: "/home/ubuntu/playbook" , mode: "0400" } # change the path with your own PEM key
       - { src: "./inventory.aws_ec2.yaml", dest: "/home/ubuntu/playbook" }
-      - { src: "./ansible.cfg", dest: "/home/ubuntu/playbook" }
+      - { src: "./ansible-config/ansible.cfg", dest: "/home/ubuntu/playbook" }
       - { src: "./main-deployment-playbook.yaml", dest: "/home/ubuntu/playbook" } 
+      - { src: "./inventory.ini", dest: "/home/ubuntu/playbook" }
+      - { src: "~/.ssh/aws-keypair", dest: "/home/ubuntu/playbook" , mode: "0400" } # change the path with your own PEM key
 
   - name: Run the playbook command
-    ansible.builtin.command: ansible-playbook -i inventory.aws_ec2.yaml main-deployment-playbook.yaml
+    ansible.builtin.command: ansible-playbook -i inventory.ini main-deployment-playbook.yaml
     args:
       chdir: /home/ubuntu/playbook
     register: result

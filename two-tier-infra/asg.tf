@@ -1,7 +1,7 @@
 resource "aws_autoscaling_group" "web-app-asg" {
   name                      = "web-app-asg"
   max_size                  = 3
-  min_size                  = 1
+  min_size                  = 2
   desired_capacity          = 2
   health_check_type         = "ELB"
   
