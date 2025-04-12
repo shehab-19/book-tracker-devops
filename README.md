@@ -73,30 +73,24 @@ This method is ideal for testing and development purposes.
    cd two-tier-dev
    ```
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    pip install flask flask-mysqldb python-dotenv
    ```
 
-4. Copy `.env.example` to `.env` and update it with your MySQL credentials:
+3. Copy `.env.example` to `.env` and update it with your MySQL credentials:
    ```bash
    cp .env.example .env
    ```
 
-5. Create a MySQL database named `bookstore` (or your chosen name).
+4. Create a MySQL database named `bookstore` (or your chosen name).
 
-6. Run the application:
+5. Run the application:
    ```bash
    python app.py
    ```
 
-7. Visit `http://localhost:5000` in your browser.
+6. Visit `http://localhost:5000` in your browser.
 
 ---
 
