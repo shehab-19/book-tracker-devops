@@ -2,8 +2,9 @@
 
 ![Book Tracker](./images/book-tracker.png)
 
-The **Book Tracker Application** is a cloud-native, two-tier application designed for tracking your reading list. It features a modern, responsive UI and robust backend infrastructure. This project demonstrates expertise in cloud infrastructure, automation, CI/CD pipelines, and dynamic inventory management.  
-This repository is a **playground for every cloud/DevOps enthusiast**, offering hands-on experience with infrastructure as code, configuration management, containerization, and CI/CD pipelines.
+The **Book Tracker Application** is a cloud-native, two-tier app built to help you manage your reading list with ease. It follows industry best practices, featuring a modern, responsive UI and a solid backend architecture.
+
+This repository is a **hands-on playground** for cloud and DevOps enthusiasts, offering practical experience in containerization, configuration management, and continuous delivery workflows — all implemented with best practices in mind.
 
 ---
 
@@ -55,6 +56,10 @@ This method leverages Terraform for infrastructure provisioning, Ansible for con
 6. Access the application:
    - Use the DNS of your Application Load Balancer (ALB) to access the app.
 
+7. Cleanup AWS Resources
+    ```bash
+    terraform destroy -auto-approve
+    ```
 ---
 
 ### 2. Deploy Locally
