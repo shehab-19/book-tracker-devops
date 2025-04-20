@@ -15,7 +15,7 @@ env/
 # Ignore Terraform-related files
 *.tfstate
 *.tfstate.*
-.terraform/
+*.terraform/
 .terraform.lock.hcl
 
 # Ignore Docker-related files
