@@ -29,4 +29,8 @@ module "database" {
   source = "./modules/database"
   db-name = "bookstore"
   db-identifier = "database01"
+  db_sg = module.security.db-security_group_id
+  db-subnets = module.vpc-networking.public_subnet_ids[0]
+  db-username = module.security.ssm_db_username
+  db-password = module.security.ssm_db_password
 }
