@@ -1,15 +1,15 @@
 resource "aws_autoscaling_group" "web-app-asg" {
   name                      = "web-app-asg"
-  max_size                  = 3
-  min_size                  = 2
-  desired_capacity          = 2
+  max_size                  = var.max_size
+  min_size                  = var.min_size
+  desired_capacity          = var.desired_capacity
   health_check_type         = "ELB"
   
 launch_template {
     id      = aws_launch_template.web_lt.id
     version = "$Latest"
 }
-  vpc_zone_identifier       = values(aws_subnet.public)[*].id 
+  vpc_zone_identifier       = var.public_subnet_ids
 }
 
 

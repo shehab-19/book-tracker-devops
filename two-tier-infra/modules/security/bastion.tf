@@ -1,4 +1,5 @@
 resource "aws_iam_role" "bastion_role" {
+  count = "${var.make_bastion}" ? 1 : 0
   name               = "bastion_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -16,27 +17,30 @@ resource "aws_iam_role" "bastion_role" {
 }
 
 resource "aws_iam_policy_attachment" "bastion_role_policy_attachment" {
+  count = "${var.make_bastion}" ? 1 : 0
   name       = "bastion_role_policy_attachment"
-  roles      = [aws_iam_role.bastion_role.name]
+  roles      =  [aws_iam_role.bastion_role[count.index].name]
   policy_arn = aws_iam_policy.ec2_full_access.arn
   
 }
 
 resource "aws_iam_instance_profile" "bastion_instance_profile" {
+  count = "${var.make_bastion}" ? 1 : 0
   name = "bastion_instance_profile"
-  role = aws_iam_role.bastion_role.name
+  role = aws_iam_role.bastion_role[count.index].name
 }
 
 
 resource "aws_instance" "bastion" {
+  count = "${var.make_bastion}" ? 1 : 0
   ami           = var.ami
-  instance_type = var.t2-instance_type
-  subnet_id     = aws_subnet.public[tolist(keys(aws_subnet.public))[0]].id
+  instance_type = var.instance_type
+  subnet_id     = var.bastion-public-subnet
   vpc_security_group_ids = [ aws_security_group.bastion_sg.id ]
   key_name = aws_key_pair.mykey.key_name
   associate_public_ip_address = true
-  iam_instance_profile = aws_iam_instance_profile.bastion_instance_profile.name
-  user_data = filebase64("${path.module}/bastion.sh")
+  iam_instance_profile = aws_iam_instance_profile.bastion_instance_profile[count.index].name
+  user_data = filebase64("scripts/${var.user_data}")
 
   tags = {
     Name = "bastion"

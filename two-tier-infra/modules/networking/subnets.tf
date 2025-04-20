@@ -10,8 +10,8 @@ resource "aws_subnet" "public" {
 }
 
 locals {
-    pub-subnet-az-map = zipmap(keys(var.public-subnet-cidr_block), var.az)
-    priv-subnet-az-map = zipmap(keys(var.private-subnet-cidr_block), var.az)
+    pub-subnet-az-map = zipmap(keys(var.public-subnet-cidr_block), slice(var.az,0,length( values(var.public-subnet-cidr_block) ) ))
+    priv-subnet-az-map = zipmap(keys(var.private-subnet-cidr_block), slice(var.az,0,length( values(var.private-subnet-cidr_block) ) ))
 }
 
 resource "aws_subnet" "private" {

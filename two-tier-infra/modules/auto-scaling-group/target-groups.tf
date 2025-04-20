@@ -3,7 +3,7 @@ resource "aws_lb_target_group" "alb-target-group" {
   target_type = "instance"
   port        = 5000
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc-id
 }
 
 

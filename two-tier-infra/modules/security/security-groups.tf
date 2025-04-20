@@ -1,9 +1,8 @@
 resource "aws_security_group" "bastion_sg" {
   name        = "bastion_sg"
     description = "Security group for bastion host"
-    vpc_id      = aws_vpc.main.id
+    vpc_id      = var.vpc-id
   
-    # ssh access 
     ingress {
         from_port   = 22
         to_port     = 22
@@ -25,12 +24,11 @@ resource "aws_security_group" "bastion_sg" {
    
 }
 
-
-
 resource "aws_security_group" "web_sg" {
     name        = "web-sg"
     description = "Security group for web app"
-    vpc_id      = aws_vpc.main.id
+    vpc_id      = var.vpc-id
+  
 
   
     # web access from anywhere
@@ -65,9 +63,9 @@ resource "aws_security_group" "web_sg" {
 resource "aws_security_group" "lb_sg" {
     name        = "lb-sg"
     description = "Security group for lb app"
-    vpc_id      = aws_vpc.main.id
+    vpc_id      = var.vpc-id
+  
 
-    # HTTP access from anywhere
     ingress {
         from_port   = 80
         to_port     = 80
@@ -88,10 +86,11 @@ resource "aws_security_group" "lb_sg" {
     }
 }
 
-resource "aws_security_group" "db_sg" {
-    name        = "db-sg"
+resource "aws_security_group" "my-sqldb-sg" {
+    name        = "my-sqldb-sg"
     description = "Security group for database"
-    vpc_id      = aws_vpc.main.id
+    vpc_id      = var.vpc-id
+  
 
     ingress {
         from_port       = 3306
@@ -108,7 +107,7 @@ resource "aws_security_group" "db_sg" {
     }
 
     tags = {
-        Name = "db-security-group"
+        Name = "mysql-db-security-group"
     }
 
 }
