@@ -25,7 +25,7 @@ resource "aws_db_instance" "default" {
 
 resource "aws_db_subnet_group" "subnet_group" {
   name       = "mydb-subnet-group"
-  subnet_ids =  [var.db-subnets]
+  subnet_ids =  [var.db-subnets[0], var.db-subnets[1]]
   tags = {
     Name = "mydb-subnet-group"
   } 

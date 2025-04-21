@@ -24,7 +24,6 @@
     loop:
       - { src: "./docker-compose.yaml", dest: "/home/ubuntu/deployment" }
       - { src: "./.env", dest: "/home/ubuntu/deployment" }
-      - { src: "./inventory.aws_ec2.yaml", dest: "/home/ubuntu/playbook" }
       - { src: "./ansible-config/ansible.cfg", dest: "/home/ubuntu/playbook" }
       - { src: "./main-deployment-playbook.yaml", dest: "/home/ubuntu/playbook" } 
       - { src: "./inventory.ini", dest: "/home/ubuntu/playbook" }
