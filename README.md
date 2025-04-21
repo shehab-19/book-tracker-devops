@@ -1,5 +1,11 @@
 # Book Tracker Application
 
+## Architecture
+
+![Architecture](./images/Architecture.png )
+
+## Application
+
 ![Book Tracker](./images/book-tracker.png)
 
 The **Book Tracker Application** is a cloud-native, two-tier app built to help you manage your reading list with ease. It follows industry best practices, featuring a modern, responsive UI and a solid backend architecture.
