@@ -2,7 +2,7 @@
 
 ## Architecture
 
-![Architecture](./images/book-tracker.png)
+![Architecture](./images/Architecture.png )
 
 ## Application
 
